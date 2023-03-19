@@ -1,0 +1,9 @@
+Structure:
+- parser
+	- Read (reads input from usb)
+	- Parse (parses/translates input)
+
+- controller
+	- Controls (a list of functions that interact with the system API)
+
+- errors (a file containing multiple classes of errors)	
