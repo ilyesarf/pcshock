@@ -1,4 +1,4 @@
-# pcshock: Control Your PC with a DualShock Controller
+## pcshock: Control Your PC with a DualShock Controller
 
 - *Are you tired of having to move from your bed to pause or change a video?*
 
