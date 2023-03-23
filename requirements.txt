@@ -1,2 +1,2 @@
 pyusb
-hexdump
+git+https://github.com/pybluez/pybluez.git#egg=pybluez
