@@ -1,24 +1,23 @@
 import inspect
 
-class Parser:
-    def __init__(self, buf):
-        self.buf = buf
-        self.presses = {}
-    
-        self.set_presses()
+class Parser:	
+	def parse(self, buf):
+		presses = {}
+		functions = [func[1] for func in inspect.getmembers(self, predicate=inspect.ismethod) if func[0].startswith('get_')]
+		for func in functions:
+			presses.update(func(buf))
+		
+		return presses
 
-    def set_presses(self):
-        functions = [func[1] for func in inspect.getmembers(self, predicate=inspect.ismethod) if func[0].startswith('get_')]
-        for func in functions:
-            self.presses.update(func(self.buf))
+	@classmethod
+	def get_buttons(cls, buf):
+		data = buf[5]
+		print(data)
+		buttons = dict.fromkeys(['square', 'cross', 'circle', 'triangle'], False)
 
-    @classmethod
-    def get_buttons(cls, buf):
-        data = buf[5]
-        buttons = dict.fromkeys(['square', 'cross', 'circle', 'triangle'], False)
+		bits = [2**i for i in range(4, 8)] 
+		for btn, bit in zip(buttons.keys(), bits):
+			buttons[btn] = (data&bit)!=0
 
-        bits = [2**i for i in range(4, 8)] 
-        for btn, bit in zip(buttons.keys(), bits):
-            buttons[btn] = (data&bit)!=0
+		return buttons
 
-        return buttons

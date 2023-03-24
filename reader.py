@@ -7,10 +7,12 @@ import os
 import time
 import socket
 from errors import *
+from parser import Parser
+
 
 DEBUG = os.getenv('DEBUG')
 
-class USB:
+class USB(Parser):
     def __init__(self, idv=0x054c, idp=0x09cc):
         self.dev = usb.core.find(idVendor=idv, idProduct=idp)
         if not self.dev:
@@ -27,17 +29,12 @@ class USB:
             self.detach()
 
         self.dev.set_configuration()
-        self.ep = self.get_ep()
+        self.ep = self.dev[0][(self.intf,0)][0]
     
     def detach(self, id=0):
         if self.dev.is_kernel_driver_active(id):
             self.dev.detach_kernel_driver(id)
             print(f"Interface number {id} detached from kernel")
-    
-    def get_ep(self): 
-        ep = self.dev[0][(self.intf,0)][0]
-
-        return ep
     
     def read(self, size=0x40):
         #eaddr = self.ep.bEndpointAddress
@@ -45,7 +42,7 @@ class USB:
         
         return data
 
-class BT:
+class BT(Parser):
     def __init__(self, name="Wireless Controller"):
         self.name = name
         self.ds4_addr = self.find_ds4()
@@ -83,7 +80,6 @@ class BT:
         return data
 
 if __name__ == '__main__':
-    from parser import Parser
     if DEBUG:
         reader = USB(idv=0x275d, idp=0x0ba6) #mouse test
         print(reader.read(100))
@@ -94,6 +90,5 @@ if __name__ == '__main__':
         else:
             reader = BT()
             buf = reader.read()[2:]
-        
-        parser = Parser(buf)
-        print(parser.presses)
+       
+        print(reader.parse(buf))
