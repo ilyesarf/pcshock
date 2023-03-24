@@ -69,7 +69,6 @@ class BT(Parser):
 
     def connect_ds4(self):
         sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,socket.BTPROTO_L2CAP)
-        print(self.ds4_addr)
         sock.connect((self.ds4_addr, 0x13))
 
         return sock
@@ -80,15 +79,11 @@ class BT(Parser):
         return data
 
 if __name__ == '__main__':
-    if DEBUG:
-        reader = USB(idv=0x275d, idp=0x0ba6) #mouse test
-        print(reader.read(100))
+    if os.getenv('USB'):
+        reader = USB()
+        buf = reader.read()
     else:
-        if os.getenv('USB'):
-            reader = USB()
-            buf = reader.read()
-        else:
-            reader = BT()
-            buf = reader.read()[2:]
-       
-        print(reader.parse(buf))
+        reader = BT()
+        buf = reader.read()[2:]
+   
+    print(reader.parse(buf))

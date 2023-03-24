@@ -12,7 +12,6 @@ class Parser:
 	@classmethod
 	def get_buttons(cls, buf):
 		data = buf[5]
-		print(data)
 		buttons = dict.fromkeys(['square', 'cross', 'circle', 'triangle'], False)
 
 		bits = [2**i for i in range(4, 8)] 
