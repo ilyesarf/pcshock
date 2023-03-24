@@ -96,4 +96,4 @@ if __name__ == '__main__':
             buf = reader.read()[2:]
         
         parser = Parser(buf)
-        print(parser.get_buttons())
+        print(parser.presses)
