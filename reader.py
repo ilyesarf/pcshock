@@ -83,6 +83,7 @@ class BT:
         return data
 
 if __name__ == '__main__':
+    from parser import Parser
     if DEBUG:
         reader = USB(idv=0x275d, idp=0x0ba6) #mouse test
         print(reader.read(100))
@@ -93,7 +94,6 @@ if __name__ == '__main__':
         else:
             reader = BT()
             buf = reader.read()[2:]
-
-        print(buf[5])
-        print(buf[2])
         
+        parser = Parser(buf)
+        print(parser.get_buttons())
