@@ -84,7 +84,7 @@ class BT:
 
 if __name__ == '__main__':
     if DEBUG:
-        reader = Reader(idv=0x275d, idp=0x0ba6) #mouse test
+        reader = USB(idv=0x275d, idp=0x0ba6) #mouse test
         print(reader.read(100))
     else:
         if os.getenv('USB'):
