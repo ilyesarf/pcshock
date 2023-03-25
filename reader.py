@@ -42,11 +42,15 @@ class USB(Parser):
         return data
 
 class BT(Parser):
-    def __init__(self, name="Wireless Controller"):
+    def __init__(self, name="Wireless Controller", ds4_addr=None):
         self.name = name
-        self.ds4_addr = self.find_ds4()
+        if not ds4_addr:
+            self.ds4_addr = self.find_ds4()
+        else:
+            self.ds4_addr = ds4_addr
+        
+        self.init_report()
         self.sock = self.connect_ds4()
-
 
     def find_ds4(self):
         print("Discovering devices")
@@ -65,16 +69,22 @@ class BT(Parser):
             raise DS4BTError("DualShock4 device has not been detected")
 
         return ds4_addr
+    
 
+    def init_report(self): #to get full report
+        sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,socket.BTPROTO_L2CAP)
+        sock.connect((self.ds4_addr, 0x11))
+        enable_report = b'\x43\x02'
+        sock.send(enable_report)
+    
     def connect_ds4(self):
         sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,socket.BTPROTO_L2CAP)
         sock.connect((self.ds4_addr, 0x13))
 
-        return sock
+        return sock 
     
     def read(self, size=0x40):
         data = self.sock.recv(size)
-
         return data
 
 if __name__ == '__main__':
@@ -82,7 +92,7 @@ if __name__ == '__main__':
         offset = 0
         reader = USB()
     else:
-        offset = 1
+        offset = 3
         reader = BT()
 
     while True:
