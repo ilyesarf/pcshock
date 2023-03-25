@@ -20,4 +20,9 @@ class Parser:
             buttons[btn] = (data&bit)!=0
 
         return buttons
+    
+    @classmethod
+    def get_battery(cls, buf):
+        btt = {'battery': buf[30]%16}
 
+        return btt
