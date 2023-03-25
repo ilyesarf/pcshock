@@ -37,7 +37,6 @@ class USB(Parser):
             print(f"Interface number {id} detached from kernel")
     
     def read(self, size=0x40):
-        #eaddr = self.ep.bEndpointAddress
         data = self.ep.read(size, timeout=50) 
         
         return data
@@ -80,10 +79,15 @@ class BT(Parser):
 
 if __name__ == '__main__':
     if os.getenv('USB'):
+        offset = 0
         reader = USB()
-        buf = reader.read()
     else:
+        offset = 1
         reader = BT()
-        buf = reader.read()[2:]
-   
-    print(reader.parse(buf))
+
+    while True:
+            try:
+                buf = reader.read()[offset:]
+                print(reader.parse(buf))
+            except KeyboardInterrupt:
+                exit(1)
