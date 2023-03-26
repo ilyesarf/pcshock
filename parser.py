@@ -26,3 +26,14 @@ class Parser:
         btt = {'battery': buf[30]%16}
 
         return btt
+
+    @classmethod
+    def get_analogs(cls, buf):
+        data = buf[6]
+        analogs = dict.fromkeys(['l1', 'r1', 'l2', 'r2', 'share', 'opt', 'l3', 'r3'], False)
+
+        bits = [2**i for i in range(8)] 
+        for anl, bit in zip(analogs.keys(), bits):
+            analogs[anl] = (data&bit)!=0
+
+        return analogs
