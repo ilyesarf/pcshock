@@ -1,4 +1,5 @@
 *.swp
 *.swo
+ds4_addr
 __pycache__/
 tmp/
