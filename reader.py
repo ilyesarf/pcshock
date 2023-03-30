@@ -42,15 +42,19 @@ class USB(Parser):
         return data
 
 class BT(Parser):
-    def __init__(self, name="Wireless Controller", ds4_addr=None):
+    def __init__(self, name="Wireless Controller"):
         self.name = name
-        if not ds4_addr:
+        if not os.path.exists('ds4_addr'):
             self.ds4_addr = self.find_ds4()
+            self.save_ds4_addr(self.ds4_addr)
         else:
-            self.ds4_addr = ds4_addr
+            self.ds4_addr = self.read_ds4_addr()
         
         self.init_report()
         self.sock = self.connect_ds4()
+
+    def save_ds4_addr(self, ds4_addr): open('ds4_addr', 'w').write(ds4_addr)
+    def read_ds4_addr(self): return open('ds4_addr', 'r').read()
 
     def find_ds4(self):
         print("Discovering devices")
@@ -70,7 +74,6 @@ class BT(Parser):
 
         return ds4_addr
     
-
     def init_report(self): #to get full report
         sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,socket.BTPROTO_L2CAP)
         sock.connect((self.ds4_addr, 0x11))
