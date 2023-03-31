@@ -90,17 +90,3 @@ class BT(Parser):
         data = self.sock.recv(size)
         return data
 
-if __name__ == '__main__':
-    if os.getenv('USB'):
-        offset = 0
-        reader = USB()
-    else:
-        offset = 3
-        reader = BT()
-
-    while True:
-            try:
-                buf = reader.read()[offset:]
-                print(reader.parse(buf))
-            except KeyboardInterrupt:
-                exit(1)
