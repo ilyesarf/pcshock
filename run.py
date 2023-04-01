@@ -2,7 +2,15 @@ import os
 import keyboard
 from reader import *
 
-ACTS = {"l1": ["ctrl", "shift", "tab"], "r1": ["ctrl", "tab"], "l2": ["alt", "ctrl", "left"],"r2": ["alt", "ctrl", "right"], "l3": ["alt", "tab"]}
+ACTS = {"l1": ["ctrl", "shift", "tab"], 
+        "r1": ["ctrl", "tab"], 
+        "l2": ["alt", "ctrl", "left"],
+        "r2": ["alt", "ctrl", "right"], 
+        "l3": ["alt", "tab"], 
+        "triangle": ["space"],
+        "square": ["f"]}
+
+
 def run_act(act):
     for key in act:
         keyboard.press(key)
