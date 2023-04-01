@@ -21,9 +21,24 @@ class Parser:
 
         bits = [2**i for i in range(4, 8)] 
         for btn, bit in zip(buttons.keys(), bits):
-            buttons[btn][0], = [(data&bit)!=0]
+            buttons[btn][0] = (data&bit)!=0
 
         return buttons
+
+    @classmethod
+    def get_hats(cls, buf):
+        arrang = {'0': ['north'], '1': ['north', 'east'], '2': ['east'], '3': ['south', 'east'], '4': ['south'], '5': ['south', 'west'], '6': ['west'], '7': ['north','west']}
+
+        data = buf[5]
+        hats = {key: list([False]) for key in ['north', 'east', 'south', 'west']}
+
+        hat = data&15
+        if hat != 8:
+            for h in arrang[str(hat)]:
+                hats[h][0] = True
+        
+        return hats
+
     
     @classmethod
     def get_battery(cls, buf):
@@ -41,3 +56,5 @@ class Parser:
             analogs[anl][0] = (data&bit)!=0
 
         return analogs
+    
+    

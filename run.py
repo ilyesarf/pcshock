@@ -8,7 +8,11 @@ ACTS = {"l1": ["ctrl", "shift", "tab"],
         "r2": ["alt", "ctrl", "right"], 
         "l3": ["alt", "tab"], 
         "triangle": ["space"],
-        "square": ["f"]}
+        "square": ["f"],
+        "north": ["up"],
+        "east": ["right"],
+        "south": ["down"],
+        "west": ["left"]}
 
 
 def run_act(act):
