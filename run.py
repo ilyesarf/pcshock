@@ -33,21 +33,22 @@ states = {key: [False, 0] for key in ACTS.keys()}
 while True:
         try:
             buf = reader.read()[offset:]
-            data = reader.parse(buf, ACTS)
+            data = reader.parse(buf)
             for k in ACTS.keys():
                 key = data[k]
+                act = ACTS[k]
                 state = states[k]
                 st = time.monotonic()
 
-                if key[0] and not state[0]:
+                if key and not state[0]:
                     state[0] = True
                     state[1] = st
 
-                elif not key[0] and state[0]:
+                elif not key and state[0]:
                     state[0] = False
 
                     if st - state[1] > 0.1:
-                        run_act(key[1])
+                        run_act(act)
 
         except KeyboardInterrupt:
             exit(1)
