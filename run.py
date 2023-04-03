@@ -2,7 +2,8 @@ import os
 import keyboard
 from reader import *
 
-ACTS = {"l1": ["ctrl", "shift", "tab"], 
+ACTS = {"psbtn": ["exit"],
+        "l1": ["ctrl", "shift", "tab"], 
         "r1": ["ctrl", "tab"], 
         "l2": ["alt", "ctrl", "left"],
         "r2": ["alt", "ctrl", "right"], 
@@ -17,6 +18,9 @@ ACTS = {"l1": ["ctrl", "shift", "tab"],
 
 def run_act(act):
     for key in act:
+        if key == "exit":
+            print("Program exited from controller")
+            exit(1)
         keyboard.press(key)
     
     for key in act:

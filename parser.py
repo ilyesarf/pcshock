@@ -53,4 +53,8 @@ class Parser:
 
         return analogs
     
-    
+    @classmethod
+    def get_psbtn(cls, buf):
+        data = {'psbtn': (buf[7]&1)!=0}
+
+        return data
