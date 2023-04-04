@@ -39,7 +39,7 @@ class USB(Parser):
     def read(self, size=0x40):
         data = self.ep.read(size, timeout=50) 
         
-        return data
+        return data 
 
 class BT(Parser):
     def __init__(self, name="Wireless Controller"):
@@ -50,8 +50,8 @@ class BT(Parser):
         else:
             self.ds4_addr = self.read_ds4_addr()
         
-        self.init_report()
-        self.sock = self.connect_ds4()
+        self.send_sock = self.init_report()
+        self.recv_sock = self.connect_ds4()
 
     def save_ds4_addr(self, ds4_addr): open('ds4_addr', 'w').write(ds4_addr)
     def read_ds4_addr(self): return open('ds4_addr', 'r').read()
@@ -79,6 +79,8 @@ class BT(Parser):
         sock.connect((self.ds4_addr, 0x11))
         enable_report = b'\x43\x02'
         sock.send(enable_report)
+
+        return sock
     
     def connect_ds4(self):
         sock = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_SEQPACKET,socket.BTPROTO_L2CAP)
@@ -87,6 +89,9 @@ class BT(Parser):
         return sock 
     
     def read(self, size=0x40):
-        data = self.sock.recv(size)
+        data = self.recv_sock.recv(size)
         return data
+
+    def write(self, data):
+        self.send_sock.send(data)
 

@@ -1,6 +1,7 @@
 import os
 import keyboard
 from reader import *
+from emit import *
 
 ACTS = {"psbtn": ["exit"],
         "l1": ["ctrl", "shift", "tab"], 
@@ -35,6 +36,8 @@ else:
 
 states = {key: [False, 0] for key in ACTS.keys()}
 while True:
+
+        emit(reader, red=123, blue=205, led_bright=1)
         try:
             buf = reader.read()[offset:]
             data = reader.parse(buf)
@@ -53,6 +56,6 @@ while True:
 
                     if st - state[1] > 0.1:
                         run_act(act)
-
+            
         except KeyboardInterrupt:
             exit(1)
