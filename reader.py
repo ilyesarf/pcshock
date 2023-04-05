@@ -4,7 +4,6 @@ import usb.core
 import usb.util
 import bluetooth
 import os
-import time
 import socket
 from errors import *
 from parser import Parser
@@ -29,17 +28,21 @@ class USB(Parser):
             self.detach()
 
         self.dev.set_configuration()
-        self.ep = self.dev[0][(self.intf,0)][0]
-    
+        self.in_ep = self.dev[0][(self.intf,0)][0]
+        self.out_ep = self.dev[0][(self.intf, 0)][1]
+
     def detach(self, id=0):
         if self.dev.is_kernel_driver_active(id):
             self.dev.detach_kernel_driver(id)
             print(f"Interface number {id} detached from kernel")
     
     def read(self, size=0x40):
-        data = self.ep.read(size, timeout=50) 
+        data = self.in_ep.read(size, timeout=50) 
         
         return data 
+    
+    def write(self, data):
+        self.out_ep.write(data)
 
 class BT(Parser):
     def __init__(self, name="Wireless Controller"):

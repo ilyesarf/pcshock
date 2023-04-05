@@ -1,5 +1,6 @@
 import os
 import keyboard
+import time
 from reader import *
 from emit import *
 
@@ -36,7 +37,6 @@ else:
 
 states = {key: [False, 0] for key in ACTS.keys()}
 while True:
-
         emit(reader, red=123, blue=205, led_bright=1)
         try:
             buf = reader.read()[offset:]
