@@ -10,6 +10,7 @@ from reader import *
 from emit import *
 
 ACTS = {'psbtn': ['exit'], 
+        'l': ['mouse'],
         'l1': ['keyb', 'ctrl', 'shift', 'tab'], 
         'r1': ['keyb', 'ctrl', 'tab'], 
         'l2': ['keyb', 'alt', 'ctrl', 'left'], 
@@ -43,6 +44,14 @@ def run_act(act, reader):
         click = act[1]
         pyautogui.click(button=click)
 
+def move_mouse(x, y):
+    sens = 100
+    x = x / 137 - 1
+    y = y / 124 - 1
+
+    dx, dy = int(x*sens), int(y*sens)
+    pyautogui.move(dx, dy)
+
 if os.getenv('USB'):
     offset = 0
     reader = USB()
@@ -59,18 +68,22 @@ while True:
             for k in ACTS.keys():
                 key = data[k]
                 act = ACTS[k]
-                state = states[k]
-                st = time.monotonic()
+                if act[0] != 'mouse':
+                    state = states[k]
+                    st = time.monotonic()
 
-                if key and not state[0]:
-                    state[0] = True
-                    state[1] = st
+                    if key and not state[0]:
+                        state[0] = True
+                        state[1] = st
 
-                elif not key and state[0]:
-                    state[0] = False
+                    elif not key and state[0]:
+                        state[0] = False
 
-                    if st - state[1] > 0.1:
-                        run_act(act, reader)
+                        if st - state[1] > 0.1:
+                            run_act(act, reader)
+                else:
+                    if os.getenv('MOUSE'):
+                        move_mouse(key[0], key[1])
             
         except KeyboardInterrupt:
             emit(reader)
