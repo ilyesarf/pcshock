@@ -58,3 +58,10 @@ class Parser:
         data = {'psbtn': (buf[7]&1)!=0}
 
         return data
+
+    @classmethod
+    def get_lstick(cls, buf):
+        x, y = buf[1:3]
+        lstick = {'l': (x, y)}
+
+        return lstick

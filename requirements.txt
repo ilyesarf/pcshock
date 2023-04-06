@@ -1,2 +1,4 @@
 pyusb
 git+https://github.com/pybluez/pybluez.git#egg=pybluez
+keyboard
+mouse

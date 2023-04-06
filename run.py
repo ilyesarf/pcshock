@@ -1,32 +1,47 @@
 import os
+try:
+    import pyautogui 
+except:
+    os.system('xhost +')
+    import pyautogui
 import keyboard
 import time
 from reader import *
 from emit import *
 
-ACTS = {"psbtn": ["exit"],
-        "l1": ["ctrl", "shift", "tab"], 
-        "r1": ["ctrl", "tab"], 
-        "l2": ["alt", "ctrl", "left"],
-        "r2": ["alt", "ctrl", "right"], 
-        "l3": ["alt", "tab"], 
-        "triangle": ["space"],
-        "square": ["f"],
-        "north": ["up"],
-        "east": ["right"],
-        "south": ["down"],
-        "west": ["left"]}
+ACTS = {'psbtn': ['exit'], 
+        'l1': ['keyb', 'ctrl', 'shift', 'tab'], 
+        'r1': ['keyb', 'ctrl', 'tab'], 
+        'l2': ['keyb', 'alt', 'ctrl', 'left'], 
+        'r2': ['keyb', 'alt', 'ctrl', 'right'], 
+        'l3': ['keyb', 'alt', 'tab'], 
+        'cross': ['click', 'left'],
+        'triangle': ['keyb', 'space'], 
+        'square': ['keyb', 'f'], 
+        'north': ['keyb', 'up'], 
+        'east': ['keyb', 'right'], 
+        'south': ['keyb', 'down'], 
+        'west': ['keyb', 'left']}
 
 
-def run_act(act):
-    for key in act:
-        if key == "exit":
-            print("Program exited from controller")
-            exit(1)
-        keyboard.press(key)
+
+def run_act(act, reader):
+    if act[0] == "keyb":
+        keys = act[1:]
+        for key in keys:
+            keyboard.press(key)
+        
+        for key in keys:
+            keyboard.release(key)
+
+    elif act[0] == "exit":
+        print("Program exited from controller")
+        emit(reader)
+        exit(1)
     
-    for key in act:
-        keyboard.release(key)
+    elif act[0] == "click":
+        click = act[1]
+        pyautogui.click(button=click)
 
 if os.getenv('USB'):
     offset = 0
@@ -55,7 +70,8 @@ while True:
                     state[0] = False
 
                     if st - state[1] > 0.1:
-                        run_act(act)
+                        run_act(act, reader)
             
         except KeyboardInterrupt:
+            emit(reader)
             exit(1)

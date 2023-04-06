@@ -31,6 +31,6 @@ if __name__ == '__main__':
 
     while True:
         red, green, blue = (random.randint(0, 255) for i in range(3))
-        emit(reader, rumble1=30, rumble2=30, red=red, green=green, blue=blue, led_bright=30)
+        emit(reader, rumble2=30, red=red, green=green, blue=blue, led_bright=30)
         time.sleep(0.3)
 
