@@ -22,15 +22,4 @@ def emit(reader, rumble1=0, rumble2=0, red=0, green=0, blue=0, led_bright=0, led
 
     reader.write(pkt)
 
-if __name__ == '__main__':
-    import random, time, os
-    if not os.getenv('USB'):
-        reader = BT()
-    else:
-        reader = USB()
-
-    while True:
-        red, green, blue = (random.randint(0, 255) for i in range(3))
-        emit(reader, rumble2=30, red=red, green=green, blue=blue, led_bright=30)
-        time.sleep(0.3)
 
