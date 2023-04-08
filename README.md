@@ -8,3 +8,12 @@
 
 With pcshock, you can control your computer wirelessly from the comfort of your couch or bed.
 
+## Installation
+
+```
+$ git clone https://github.com/Quimzy/pcshock
+
+$ sudo pip3 install -r requirements.txt
+
+$ sudo python3 run.py
+```
