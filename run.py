@@ -65,6 +65,14 @@ while True:
         try:
             buf = reader.read()[offset:]
             data = reader.parse(buf)
+            if data['battery'] <= 2 and data['battery'] != 0:
+                pyautogui.alert("Low battery level. Please charge your controller!")
+            elif data['battery'] == 0:
+                pyautogui.alert("Empty battery. Controller getting disconnected...")
+                time.sleep(2)
+                emit(reader)
+                exit(1)
+
             for k in ACTS.keys():
                 key = data[k]
                 act = ACTS[k]
@@ -86,5 +94,6 @@ while True:
                         move_mouse(key[0], key[1])
             
         except KeyboardInterrupt:
+            print("Program exited from keyboard")
             emit(reader)
             exit(1)
