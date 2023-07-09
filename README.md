@@ -5,6 +5,8 @@
 ```
 $ git clone https://github.com/ilyesarf/pcshock
 
+$ git switch vibrator
+
 $ sudo pip3 install -r requirements.txt
 
 $ sudo python3 vibrator.py
