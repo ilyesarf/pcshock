@@ -3,7 +3,7 @@
 ### Installation:
 
 ```
-$ git clone https://github.com/Quimzy/pcshock
+$ git clone https://github.com/ilyesarf/pcshock
 
 $ sudo pip3 install -r requirements.txt
 
