@@ -9,9 +9,9 @@ else:
     offset = 0
     reader = USB()
 
-KEYS = ['psbtn', 'cross']
+keys = ['cross', 'psbtn']
 modes = [(150, 100, 0, 255, 0, 100, 0), (175, 150, 200, 165, 0, 100, 0), (255, 255, 255, 0, 0, 100, 0)]
-states = {key: [False, 0] for key in KEYS}
+states = {k: [False, 0] for k in keys}
 mode = 0
 
 emit(reader, 50, 50, 100, 0, 203, 100, 0)
@@ -20,27 +20,27 @@ while True:
     try:
         buf = reader.read()[offset:]
         data = reader.parse(buf)
-
-        for key in KEYS:
-            state = states[key]
-            val = data[key]
-
+        for k in keys:
+            state = states[k]
+            key = data[k]
             st = time.monotonic()
 
-            if val and not state[0]:
+            if key and not state[0]:
                 state[0] = True
                 state[1] = st
 
-            elif not val and state[0]:
+            elif not key and state[0]:
                 state[0] = False
-                if key == 'cross':
-                    if st - state[1] > 0.1:
+
+                if st - state[1] > 0.1:
+                    if k == 'cross':
                         mode += 1
                         if mode == 3:
                             mode = 0
-                elif key == 'psbtn':
-                    emit(reader)
-                    exit(1)
+                    elif k == 'psbtn':
+                        print('Program exited from controller')
+                        emit(reader)
+                        exit(1)
 
         emit(reader,*modes[mode])
     except KeyboardInterrupt:
