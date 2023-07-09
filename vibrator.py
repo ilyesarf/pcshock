@@ -1,5 +1,5 @@
-from reader import *
-from emit import emit
+from pcshock.reader import *
+from pcshock.emit import emit
 import time, os
 
 if not os.getenv('USB'):

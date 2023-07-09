@@ -5,8 +5,8 @@ import usb.util
 import bluetooth
 import os
 import socket
-from errors import *
-from parser import Parser
+from pcshock.errors import *
+from pcshock.parser import Parser
 
 
 DEBUG = os.getenv('DEBUG')

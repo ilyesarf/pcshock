@@ -1,5 +1,5 @@
 
-from reader import *
+from pcshock.reader import *
 
 def emit(reader, rumble1=0, rumble2=0, red=0, green=0, blue=0, led_bright=0, led_dim=0):
     if isinstance(reader, BT):
